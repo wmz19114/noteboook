@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #root {
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: palevioletred;
+            font-weight: 200;
+            padding: 50px;
+        }
+        
+        input {
+            width: 30%;
+            height: 30px;
+            border-width: 1px;
+            border-radius: 6px;
+        }
+        
+        .doList li {
+            line-height: 30px;
+            position: relative;
+            text-align: left;
+            margin: auto;
+            height: 30px;
+            width: 30%;
+            list-style: none;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 6px;
+        }
+        
+        .delete {
+            display: none;
+            z-index: 3;
+            float: left;
+            position: absolute;
+            right: 2px;
+            top: 0px;
+        }
+        
+        .doList li:hover .delete {
+            display: block;
+        }
+        
+        #root footer {
+            margin: 2px auto;
+            width: 30%;
+        }
+        
+        .all strong {
+            font-weight: 200;
+            float: left;
+            text-align: left;
+        }
+        
+        .clr button {
+            width: 20%;
+            float: right;
+        }
+    </style>
+</head>
+
+<!-- 制作具有增删统计清空的待办记事本功能 -->
+
+<body>
+    <div id="root">
+        <!-- 字体区域及输入区域 -->
+        <section class="header">
+            <h1>记事本</h1>
+            <input type="text" autofocus="autofocus" autocapitalize="off" v-model="inputValue" id="newtodo" placeholder="写入新待办" @keyup.enter="add">
+        </section>
+        <!-- 列表区域 -->
+        <section class="main">
+            <ul class="doList">
+                <li v-for="(item, index) in list">
+                    <div class="view">
+                        <span class="index">{{index+1}}</span>
+                        <label for="">{{item}}</label>
+                    </div>
+                    <div class="delete">
+                        <button @click="remove(index)">x</button>
+                    </div>
+
+                </li>
+            </ul>
+        </section>
+        <!-- 统计区域 -->
+        <footer v-if="list.length!=0">
+            <span class="all">
+                <strong>{{list.length}}项待办</strong>
+            </span>
+            <span class="clr">
+                <button @click="clr">清除</button>
+
+            </span>
+
+
+        </footer>
+
+    </div>
+    <!-- 页面底部 -->
+    <footer>
+
+    </footer>
+
+    <script>
+        Vue.config.productionTip = false;
+        const app = new Vue({
+            el: '#root',
+            data: {
+                list: [
+                    "吃饭", "睡觉", "敲代码"
+                ],
+                inputValue: ""
+            },
+            methods: {
+                add: function() {
+                    this.list.push(this.inputValue)
+                    this.inputValue = ""
+                },
+                remove: function(index) {
+                    console.log("删除" + (index + 1))
+                    this.list.splice(index, 1)
+
+                },
+                clr: function() {
+                    // alert("您确认清除所有待办吗？");
+                    if (confirm('您确认清除所有待办吗？')) {
+                        this.list = []
+                    }
+                    this.inputValue = ""
+                },
+
+            },
+        })
+    </script>
+
+</body>
+
+</html>
